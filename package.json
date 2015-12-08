@@ -1,0 +1,19 @@
+{
+  "name": "node-hologram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --opts test/mocha.opts",
+    "test:watch": "mocha --opts test/mocha.opts --watch --growl"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "3.4.1",
+    "glob": "6.0.1",
+    "lodash": "3.10.1",
+    "mocha": "2.3.4",
+    "rfr": "1.2.3"
+  }
+}

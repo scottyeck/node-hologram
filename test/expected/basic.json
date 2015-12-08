@@ -1,0 +1,9 @@
+[{
+	"name": "testing",
+	"blocks": [{
+		"title": "Basic",
+		"id": "01-basic",
+		"content": "Hello, world!",
+		"category": "testing"
+	}]
+}]

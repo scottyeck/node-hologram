@@ -1,0 +1,5 @@
+test/**/*._SPEC.js
+--recursive
+--browser phantomjs
+--timeout 60000
+--reporter spec
