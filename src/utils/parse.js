@@ -4,8 +4,25 @@ var fs = require('fs'),
 	_ = require('lodash'),
 	_s = require('underscore.string');
 
-function isolateBlocks(fileContents) {
+var isolateBlocks;
+
+function isolateBlocksCommentBlocks(fileContents) {
 	return fileContents.match(/\/\*doc([^/]+)\*\//g);
+}
+
+function isolateSingleLineCommentBlocks(fileContents) {
+	return fileContents.match(/\/\/doc(.|\n)*\/\/cod/);
+}
+
+function genericIsolateBlocks(commentStyle, fileContents) {
+	if (commentStyle === 'block') {
+		return isolateBlocksCommentBlocks(fileContents);
+	} else if (commentStyle === 'single-line') {
+		return isolateSingleLineCommentBlocks(fileContents);
+	} else {
+		// TODO
+		throw Error();
+	}
 }
 
 function isolateBlockMetadata(blockContents) {
@@ -52,7 +69,9 @@ function parseBlock(blockContents) {
 	return result;
 }
 
-function parse(file) {
+function parse(file, options) {
+
+	isolateBlocks = _.partial(genericIsolateBlocks, options.commentStyle);
 
 	var fileContents = fs.readFileSync(file, 'utf-8');
 	var blocks = isolateBlocks(fileContents);

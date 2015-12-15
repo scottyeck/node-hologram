@@ -11,7 +11,9 @@ describe('parse()', function() {
 
 	it('It operates as intended.', function() {
 
-		var result = parse('test/in/basic.scss'),
+		var result = parse('test/in/basic.scss', {
+			commentStyle: 'block'
+		}),
 			expected = rfr('test/expected/basic.json');
 
 		expect(_.isEqual(result, expected)).to.be.true;
