@@ -1,7 +1,19 @@
 'use strict';
 
-var rfr = require('rfr');
+
+var expect = require('chai').expect,
+	_ = require('lodash'),
+	rfr = require('rfr');
 
 var parse = rfr('src/utils/parse');
 
-parse('test/in/basic.scss');
+describe('parse()', function() {
+
+	it('It operates as intended.', function() {
+
+		var result = parse('test/in/basic.scss'),
+			expected = rfr('test/expected/basic.json');
+
+		expect(_.isEqual(result, expected)).to.be.true;
+	});
+});
