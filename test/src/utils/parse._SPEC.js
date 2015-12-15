@@ -18,4 +18,13 @@ describe('parse()', function() {
 
 		expect(_.isEqual(result, expected)).to.be.true;
 	});
+
+	it('It parses blocks using single-line comment styles as intended.', function() {
+		var result = parse('test/in/basic-single-line.scss', {
+			commentStyle: 'single-line'
+		}),
+			expected = rfr('test/expected/basic-single-line.json');
+
+		expect(_.isEqual(result, expected)).to.be.true;
+	});
 });

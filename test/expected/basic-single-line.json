@@ -1,0 +1,11 @@
+[{
+	"title": "Basic 1",
+	"name": "01-basic",
+	"contents": "Hello, world!",
+	"category": "testing"
+}, {
+	"title": "Basic 2",
+	"name": "02-basic",
+	"contents": "Hello, world, again!",
+	"category": "testing"
+}]

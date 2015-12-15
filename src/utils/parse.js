@@ -11,7 +11,13 @@ function isolateBlocksCommentBlocks(fileContents) {
 }
 
 function isolateSingleLineCommentBlocks(fileContents) {
-	return fileContents.match(/\/\/doc(.|\n)*\/\/cod/);
+	/*
+	 * Removes non-commented code
+	 */
+	var result = fileContents.replace(/(?:\n)([^\/]+)/g, '\n');
+
+	result = result.split('//doc');
+	return result;
 }
 
 function genericIsolateBlocks(commentStyle, fileContents) {
@@ -26,8 +32,7 @@ function genericIsolateBlocks(commentStyle, fileContents) {
 }
 
 function isolateBlockMetadata(blockContents) {
-	var meta = blockContents.match(/---([^/*]+)---/);
-	return meta['1'];
+	return blockContents.split('---')[1];
 }
 
 function isolateBlockMarkdown(blockContents) {
@@ -37,8 +42,12 @@ function isolateBlockMarkdown(blockContents) {
 
 function stripCommentArtifacts(str) {
 	str = str
-		.replace(/\/\*doc/, '')
-		.replace(/\*\//, '');
+		.replace(/\/\*doc/g, '')
+		.replace(/\/\/doc/g, '')
+		.replace(/\/\/enddoc/g, '')
+		.replace(/\n\/\/\s/g, '\n')
+		.replace(/\*\//g, '');
+
 	return str;
 }
 
@@ -59,6 +68,7 @@ function parseBlockMetadata(metaContents) {
 
 function parseBlock(blockContents) {
 	var stripped = stripCommentArtifacts(blockContents);
+
 	var _meta = isolateBlockMetadata(stripped);
 	var meta = parseBlockMetadata(_meta);
 	var markdown = isolateBlockMarkdown(stripped);
