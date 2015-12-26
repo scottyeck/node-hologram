@@ -3,6 +3,7 @@
 var fs = require('fs'),
 	_ = require('lodash'),
 	_s = require('underscore.string'),
+	marked = require('marked'),
 	rfr = require('rfr');
 
 var stripCommentArtifacts = rfr('src/utils/strip-comment-artifacts');
@@ -51,6 +52,10 @@ function isolateBlockMarkdown(blockContents) {
 	return _s.trim(markdown);
 }
 
+function htmlifyBlockMarkdown(markdownString) {
+	return marked(markdownString);
+}
+
 function parseBlockMetadata(metaContents) {
 	var lines = metaContents.split('\n');
 
@@ -71,10 +76,11 @@ function parseBlock(blockContents) {
 
 	var _meta = isolateBlockMetadata(stripped);
 	var meta = parseBlockMetadata(_meta);
-	var markdown = isolateBlockMarkdown(stripped);
+	var markdownString = isolateBlockMarkdown(stripped);
+	var html = htmlifyBlockMarkdown(markdownString);
 
 	var result = _.extend({}, meta, {
-		contents: markdown
+		contents: html
 	});
 	return result;
 }
