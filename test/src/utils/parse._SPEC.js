@@ -1,11 +1,11 @@
 'use strict';
 
-
 var expect = require('chai').expect,
 	_ = require('lodash'),
 	rfr = require('rfr');
 
-var parse = rfr('src/utils/parse');
+var parse = rfr('src/utils/parse'),
+	test = rfr('test/utils/test');
 
 describe('parse()', function() {
 
@@ -16,7 +16,7 @@ describe('parse()', function() {
 		}),
 			expected = rfr('test/expected/basic.json');
 
-		expect(_.isEqual(result, expected)).to.be.true;
+		test(expected, result);
 	});
 
 	it('It parses blocks using single-line comment styles as intended.', function() {
@@ -25,6 +25,6 @@ describe('parse()', function() {
 		}),
 			expected = rfr('test/expected/basic-single-line.json');
 
-		expect(_.isEqual(result, expected)).to.be.true;
+		test(expected, result);
 	});
 });
