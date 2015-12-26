@@ -56,7 +56,7 @@ function htmlifyBlockMarkdown(markdownString) {
 	return processMarkdown(markdownString);
 }
 
-function parseBlockMetadata(metaContents) {
+function processBlockMetadata(metaContents) {
 	var lines = metaContents.split('\n');
 
 	var result = {};
@@ -71,11 +71,11 @@ function parseBlockMetadata(metaContents) {
 	return result;
 }
 
-function parseBlock(blockContents) {
+function processBlock(blockContents) {
 	var stripped = stripCommentArtifacts(blockContents);
 
 	var _meta = isolateBlockMetadata(stripped);
-	var meta = parseBlockMetadata(_meta);
+	var meta = processBlockMetadata(_meta);
 	var markdownString = isolateBlockMarkdown(stripped);
 	var html = htmlifyBlockMarkdown(markdownString);
 
@@ -85,7 +85,7 @@ function parseBlock(blockContents) {
 	return result;
 }
 
-function parse(file, options) {
+function processFile(file, options) {
 
 	isolateBlocks = _.partial(genericIsolateBlocks, options.commentStyle);
 
@@ -95,10 +95,10 @@ function parse(file, options) {
 	var result = [];
 
 	_.each(blocks, function(block) {
-		result.push(parseBlock(block));
+		result.push(processBlock(block));
 	});
 
 	return result;
 }
 
-module.exports = parse;
+module.exports = processFile;

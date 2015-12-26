@@ -4,14 +4,14 @@ var expect = require('chai').expect,
 	_ = require('lodash'),
 	rfr = require('rfr');
 
-var parse = rfr('src/utils/parse'),
+var processFile = rfr('src/utils/process-file'),
 	test = rfr('test/utils/test');
 
-describe('parse()', function() {
+describe('processFile()', function() {
 
 	it('It operates as intended.', function() {
 
-		var result = parse('test/in/basic.scss', {
+		var result = processFile('test/in/basic.scss', {
 			commentStyle: 'block'
 		}),
 			expected = rfr('test/expected/basic.json');
@@ -19,8 +19,8 @@ describe('parse()', function() {
 		test(expected, result);
 	});
 
-	it('It parses blocks using single-line comment styles as intended.', function() {
-		var result = parse('test/in/basic-single-line.scss', {
+	it('It processes blocks using single-line comment styles as intended.', function() {
+		var result = processFile('test/in/basic-single-line.scss', {
 			commentStyle: 'single-line'
 		}),
 			expected = rfr('test/expected/basic-single-line.json');
@@ -28,3 +28,4 @@ describe('parse()', function() {
 		test(expected, result);
 	});
 });
+
