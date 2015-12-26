@@ -11,6 +11,7 @@ function stripCommentArtifacts(str) {
 		.replace(/\/\/doc/g, '')
 		.replace(/\/\/enddoc/g, '')
 		.replace(/\n\/\/\s/g, '\n')
+		.replace(/\n\/\//g, '\n')
 		.replace(/\*\//g, '');
 
 	return str;
