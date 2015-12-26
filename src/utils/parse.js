@@ -2,7 +2,10 @@
 
 var fs = require('fs'),
 	_ = require('lodash'),
-	_s = require('underscore.string');
+	_s = require('underscore.string'),
+	rfr = require('rfr');
+
+var stripCommentArtifacts = rfr('src/utils/strip-comment-artifacts');
 
 var isolateBlocks;
 
@@ -46,17 +49,6 @@ function isolateBlockMetadata(blockContents) {
 function isolateBlockMarkdown(blockContents) {
 	var markdown = blockContents.split('---').slice(-1)[0];
 	return _s.trim(markdown);
-}
-
-function stripCommentArtifacts(str) {
-	str = str
-		.replace(/\/\*doc/g, '')
-		.replace(/\/\/doc/g, '')
-		.replace(/\/\/enddoc/g, '')
-		.replace(/\n\/\/\s/g, '\n')
-		.replace(/\*\//g, '');
-
-	return str;
 }
 
 function parseBlockMetadata(metaContents) {
