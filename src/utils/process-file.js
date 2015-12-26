@@ -10,6 +10,10 @@ var stripCommentArtifacts = rfr('src/utils/strip-comment-artifacts'),
 
 var isolateBlocks;
 
+/*
+ * Utility methods
+ */
+
 function removeEmptyStringEntries(arr) {
 	var result = _.filter(arr, function(entry) {
 		return entry.length > 0;
@@ -17,13 +21,26 @@ function removeEmptyStringEntries(arr) {
 	return result;
 }
 
-function isolateBlocksCommentBlocks(fileContents) {
+/*
+ * File Processor
+ */
+
+var DEFAULTS = {
+	commentStyle: 'block'
+};
+
+function FileProcessor(options) {
+	options = options || {};
+	this.options = _.extend({}, DEFAULTS, options);
+}
+
+FileProcessor.prototype.isolateBlockCommentBlocks = function(fileContents) {
 	var result = fileContents.match(/\/\*doc([^/]+)\*\//g);
 	result = removeEmptyStringEntries(result);
 	return result;
 }
 
-function isolateSingleLineCommentBlocks(fileContents) {
+FileProcessor.prototype.isolateSingleLineCommentBlocks = function(fileContents) {
 	/*
 	 * Removes non-commented code
 	 */
@@ -32,31 +49,33 @@ function isolateSingleLineCommentBlocks(fileContents) {
 	return result;
 }
 
-function genericIsolateBlocks(commentStyle, fileContents) {
+FileProcessor.prototype.isolateBlocks = function(fileContents) {
+	var commentStyle = this.options.commentStyle;
+
 	if (commentStyle === 'block') {
-		return isolateBlocksCommentBlocks(fileContents);
+		return this.isolateBlockCommentBlocks(fileContents);
 	} else if (commentStyle === 'single-line') {
-		return isolateSingleLineCommentBlocks(fileContents);
+		return this.isolateSingleLineCommentBlocks(fileContents);
 	} else {
 		// TODO
 		throw Error('Improper comment-style specified.');
 	}
 }
 
-function isolateBlockMetadata(blockContents) {
+FileProcessor.prototype.isolateBlockMetadata = function(blockContents) {
 	return blockContents.split('---')[1];
 }
 
-function isolateBlockMarkdown(blockContents) {
+FileProcessor.prototype.isolateBlockMarkdown = function(blockContents) {
 	var markdown = blockContents.split('---').slice(-1)[0];
 	return _s.trim(markdown);
 }
 
-function htmlifyBlockMarkdown(markdownString) {
+FileProcessor.prototype.htmlifyBlockMarkdown = function(markdownString) {
 	return processMarkdown(markdownString);
 }
 
-function processBlockMetadata(metaContents) {
+FileProcessor.prototype.processBlockMetadata = function(metaContents) {
 	var lines = metaContents.split('\n');
 
 	var result = {};
@@ -71,13 +90,13 @@ function processBlockMetadata(metaContents) {
 	return result;
 }
 
-function processBlock(blockContents) {
+FileProcessor.prototype.processBlock = function(blockContents) {
 	var stripped = stripCommentArtifacts(blockContents);
 
-	var _meta = isolateBlockMetadata(stripped);
-	var meta = processBlockMetadata(_meta);
-	var markdownString = isolateBlockMarkdown(stripped);
-	var html = htmlifyBlockMarkdown(markdownString);
+	var _meta = this.isolateBlockMetadata(stripped);
+	var meta = this.processBlockMetadata(_meta);
+	var markdownString = this.isolateBlockMarkdown(stripped);
+	var html = this.htmlifyBlockMarkdown(markdownString);
 
 	var result = _.extend({}, meta, {
 		contents: html
@@ -85,20 +104,29 @@ function processBlock(blockContents) {
 	return result;
 }
 
-function processFile(file, options) {
+FileProcessor.prototype.processFile = function(file) {
 
-	isolateBlocks = _.partial(genericIsolateBlocks, options.commentStyle);
+	var self = this;
 
 	var fileContents = fs.readFileSync(file, 'utf-8');
-	var blocks = isolateBlocks(fileContents);
+	var blocks = this.isolateBlocks(fileContents);
 
 	var result = [];
 
 	_.each(blocks, function(block) {
-		result.push(processBlock(block));
+		result.push(self.processBlock(block));
 	});
 
 	return result;
 }
 
-module.exports = processFile;
+/*
+ * Exporter
+ */
+
+function moduleProcessFile(file, options) {
+	var fp = new FileProcessor(options);
+	return fp.processFile(file);
+}
+
+module.exports = moduleProcessFile;
