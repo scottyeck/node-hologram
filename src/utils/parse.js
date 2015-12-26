@@ -6,8 +6,17 @@ var fs = require('fs'),
 
 var isolateBlocks;
 
+function removeEmptyStringEntries(arr) {
+	var result = _.filter(arr, function(entry) {
+		return entry.length > 0;
+	});
+	return result;
+}
+
 function isolateBlocksCommentBlocks(fileContents) {
-	return fileContents.match(/\/\*doc([^/]+)\*\//g);
+	var result = fileContents.match(/\/\*doc([^/]+)\*\//g);
+	result = removeEmptyStringEntries(result);
+	return result;
 }
 
 function isolateSingleLineCommentBlocks(fileContents) {
@@ -15,8 +24,7 @@ function isolateSingleLineCommentBlocks(fileContents) {
 	 * Removes non-commented code
 	 */
 	var result = fileContents.replace(/(?:\n)([^\/]+)/g, '\n');
-
-	result = result.split('//doc');
+	result = removeEmptyStringEntries(result.split('//doc'));
 	return result;
 }
 
@@ -27,7 +35,7 @@ function genericIsolateBlocks(commentStyle, fileContents) {
 		return isolateSingleLineCommentBlocks(fileContents);
 	} else {
 		// TODO
-		throw Error();
+		throw Error('Improper comment-style specified.');
 	}
 }
 
