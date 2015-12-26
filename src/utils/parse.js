@@ -3,10 +3,10 @@
 var fs = require('fs'),
 	_ = require('lodash'),
 	_s = require('underscore.string'),
-	marked = require('marked'),
 	rfr = require('rfr');
 
-var stripCommentArtifacts = rfr('src/utils/strip-comment-artifacts');
+var stripCommentArtifacts = rfr('src/utils/strip-comment-artifacts'),
+	processMarkdown = rfr('src/utils/process-markdown');
 
 var isolateBlocks;
 
@@ -53,7 +53,7 @@ function isolateBlockMarkdown(blockContents) {
 }
 
 function htmlifyBlockMarkdown(markdownString) {
-	return marked(markdownString);
+	return processMarkdown(markdownString);
 }
 
 function parseBlockMetadata(metaContents) {
