@@ -16,7 +16,7 @@ describe('processFile()', function() {
 		}),
 			expected = rfr('test/expected/basic.json');
 
-		test(expected, result);
+		test(result, expected);
 	});
 
 	it('It processes blocks using single-line comment styles as intended.', function() {
@@ -25,7 +25,16 @@ describe('processFile()', function() {
 		}),
 			expected = rfr('test/expected/basic-single-line.json');
 
-		test(expected, result);
+		test(result, expected);
+	});
+
+	it('It processes blocks with markdown rendered as desired.', function() {
+		var result = processFile('test/in/markdown.scss', {
+			commentStyle: 'block'
+		}),
+			expected = rfr('test/expected/markdown.json');
+
+		test(result, expected);
 	});
 });
 

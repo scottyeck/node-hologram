@@ -1,11 +1,11 @@
 [{
 	"title": "Basic 1",
 	"name": "01-basic",
-	"contents": "<p>Hello, world!</p>\n",
+	"contents": "<p>Hello, world!</p>",
 	"category": "testing"
 }, {
 	"title": "Basic 2",
 	"name": "02-basic",
-	"contents": "<p>Hello, world, again!</p>\n",
+	"contents": "<p>Hello, world, again!</p>",
 	"category": "testing"
 }]

@@ -72,7 +72,9 @@ FileProcessor.prototype.isolateBlockMarkdown = function(blockContents) {
 }
 
 FileProcessor.prototype.htmlifyBlockMarkdown = function(markdownString) {
-	return processMarkdown(markdownString);
+	var result = processMarkdown(markdownString);
+	result = result.replace(/\n/g, '');
+	return result;
 }
 
 FileProcessor.prototype.processBlockMetadata = function(metaContents) {
