@@ -3,6 +3,9 @@
 var marked = require('marked'),
 renderer = new marked.Renderer();
 
+var Entities = require('html-entities').XmlEntities;
+var entities = new Entities();
+
 renderer.heading = function(text, level, raw) {
 	return '<h'
 	+ level
@@ -15,6 +18,8 @@ renderer.heading = function(text, level, raw) {
 
 renderer.code = function(code, lang, escaped) {
 
+	var result = '';
+
 	if (this.options.highlight) {
 		var out = this.options.highlight(code, lang);
 		if (out != null && out !== code) {
@@ -23,18 +28,26 @@ renderer.code = function(code, lang, escaped) {
 		}
 	}
 
+
+
+	if (lang === 'html_example') {
+		result += ['<div class="html-example">', code, '</div>'].join('\n');
+	}
+
 	if (!lang) {
 		return '<pre><code>'
-		+ (escaped ? code : escape(code, true))
+		+ (escaped ? code : entities.encode(code))
 		+ '\n</code></pre>';
 	}
 
-	return '<pre><code class="'
+	result +='<pre><code class="'
 	+ this.options.langPrefix
 	+ escape(lang, true)
 	+ '">'
-	+ (escaped ? code : escape(code, true))
+	+ (escaped ? code : entities.encode(code))
 	+ '\n</code></pre>\n';
+
+	return result;
 };
 
 function processMarkdown(markdownString) {

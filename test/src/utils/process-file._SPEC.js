@@ -36,5 +36,14 @@ describe('processFile()', function() {
 
 		test(result, expected);
 	});
+
+	it('It processes blocks with code-blocks in markdown rendered as desired.', function() {
+		var result = processFile('test/in/component.scss', {
+			commentStyle: 'block'
+		}),
+			expected = rfr('test/expected/component.js');
+
+		test.verbose(result, expected);
+	});
 });
 
