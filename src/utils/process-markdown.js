@@ -28,16 +28,14 @@ renderer.code = function(code, lang, escaped) {
 		}
 	}
 
-
-
-	if (lang === 'html_example') {
-		result += ['<div class="html-example">', code, '</div>'].join('\n');
-	}
-
 	if (!lang) {
 		return '<pre><code>'
 		+ (escaped ? code : entities.encode(code))
 		+ '\n</code></pre>';
+	}
+
+	if (lang === 'html_example') {
+		result += ['<div class="html-example">', code, '</div>'].join('\n');
 	}
 
 	result +='<pre><code class="'
