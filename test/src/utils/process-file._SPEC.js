@@ -43,7 +43,7 @@ describe('processFile()', function() {
 		}),
 			expected = rfr('test/expected/component.js');
 
-		test.verbose(result, expected);
+		test(result, expected);
 	});
 });
 
