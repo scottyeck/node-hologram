@@ -17,6 +17,33 @@ function NodeHologram(src, ops) {
 	this.src = src;
 }
 
+NodeHologram.prototype.categorize = function() {
+
+	var files = glob.sync(this.src),
+		result = {
+			categories: [],
+			config: {}
+		};
+
+	_.each(files, function(fileString) {
+
+		var blocks = processFile(fileString);
+
+		_.each(blocks, function(block) {
+			var categoryName = block.category;
+
+			if (_.isUndefined(result.config[categoryName])) {
+				result.categories.push(categoryName);
+				result.config[categoryName] = [];
+			}
+
+			result.config[categoryName].push(block);
+		});
+	});
+
+	return result;
+}
+
 NodeHologram.prototype.parse = function() {
 
 	var files = glob.sync(this.src),

@@ -26,4 +26,16 @@ describe('NodeHologram', function() {
 			test(result, expected);
 		});
 	});
+
+	describe('.categorize()', function() {
+		it.only('It categorizes source as expected.', function() {
+
+			var nh = new NodeHologram('test/in/multiple/**/*.scss');
+
+			var result = nh.categorize(),
+				expected = rfr('test/expected/multiple-categories.json');
+
+			test.verbose(result, expected);
+		});
+	});
 });
