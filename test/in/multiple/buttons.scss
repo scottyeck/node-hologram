@@ -1,0 +1,35 @@
+/*doc
+---
+title: Buttons
+name: 01-buttons
+category: buttons
+---
+
+A basic button can be created with minimal markup.
+
+```html_example
+<!-- Anchors (links) -->
+<a href="#" class="button">Link Button</a>
+
+<!-- Buttons (actions) -->
+<button class="button">Action Button</button>
+```
+*/
+
+.button {
+	background-color: #255DC1;
+	color: #FFFFFF;
+	padding: 0.75rem 1.25rem;
+	border-radius: 0.25rem;
+}
+
+.button {
+
+	&.success {
+		background-color: #32C14A;
+	}
+
+	&.error {
+		background-color: #C11816;
+	}
+}

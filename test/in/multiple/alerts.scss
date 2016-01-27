@@ -1,0 +1,36 @@
+/*doc
+---
+title: Alerts
+name: 01-alerts
+category: alerts
+---
+
+A basic alert-box can be created with minimal markup.
+
+```html_example
+<!-- Alerts -->
+<div class="alert-box success">
+	<p>Alert text goes here.</p>
+</div>
+```
+*/
+
+.alert {
+	background-color: #255DC1;
+	color: #FFFFFF;
+	padding: 0.75rem 1.25rem;
+	border-radius: 0.25rem;
+	display: block;
+	font-size: inherit;
+}
+
+.alert {
+
+	&.success {
+		background-color: #32C14A;
+	}
+
+	&.error {
+		background-color: #C11816;
+	}
+}
