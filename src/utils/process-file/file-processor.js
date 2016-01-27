@@ -115,17 +115,14 @@ FileProcessor.prototype.processBlock = function(blockContents) {
 
 FileProcessor.prototype.processFile = function(file) {
 
-
 	var self = this;
 
 	var fileContents = fs.readFileSync(file, 'utf-8');
 	var blocks = this.isolateBlocks(fileContents);
 
-
 	var result = [];
 
 	_.each(blocks, function(block) {
-
 		result.push(self.processBlock(block));
 	});
 
